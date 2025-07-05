@@ -1,0 +1,33 @@
+# .github/workflows/deploy.yml
+
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./content-web  # Dockerfile이 있는 경로 지정
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: cnacrksws.azurecr.io
+          username: ${{ secrets.AZURE_ACR_USERNAME }}
+          password: ${{ secrets.AZURE_ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t cnacrksws.azurecr.io/content-web:latest .
+          docker push cnacrksws.azurecr.io/content-web:latest
+
