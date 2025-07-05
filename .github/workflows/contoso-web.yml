@@ -1,4 +1,4 @@
-# .github/workflows/contoso-web.yml
+# 파일명: .github/workflows/contoso-web.yml
 
 name: Deploy to AKS
 
@@ -23,8 +23,8 @@ jobs:
       - name: Set AKS context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: rg-modernapp  # ← 실제 RG 이름
-          cluster-name: cnaksksws       # ← AKS 클러스터 이름
+          resource-group: rg-modernapp
+          cluster-name: cnaksksws
           subscription: ecec9459-db5c-44cd-be16-6d20c0558049
 
       - name: Deploy to AKS
