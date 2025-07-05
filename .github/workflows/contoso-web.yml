@@ -1,3 +1,5 @@
+# .github/workflows/contoso-web.yml
+
 name: Deploy to AKS
 
 on:
@@ -10,18 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Azure login
+      - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to AKS using kubectl
-        run: kubectl apply -f all-in-one-web.yaml
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: rg-modernapp  # ← 실제 RG 이름
+          cluster-name: cnaksksws       # ← AKS 클러스터 이름
+          subscription: ecec9459-db5c-44cd-be16-6d20c0558049
+
+      - name: Deploy to AKS
+        run: kubectl apply -f content-web/all-in-one-web.yaml
+
